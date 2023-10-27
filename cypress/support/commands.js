@@ -62,5 +62,25 @@ Cypress.Commands.add('startChessGame', (
       .click()
 
     cy.get('button[data-cy="new-game-index-play"]')
+      .should('be.visible')
       .click()
+})
+
+Cypress.Commands.add('getMyPlayerColor', (
+  ) => {
+    // turn
+    cy.get('img[data-cy="avatar"]')
+      .eq(1)
+      .invoke(
+        'attr', 'src'
+      )
+      .then(myImageSource => {
+        if (myImageSource.includes('black_400.png')) {
+          cy.log('black')
+          return cy.wrap('black')
+        } else {
+          cy.log('white')
+          return cy.wrap('white')
+        }
+    })
 })

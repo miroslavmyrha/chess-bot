@@ -22,7 +22,8 @@ describe('before: start chess game', () => {
         cy.get('div.piece.wp.square-52').click()
         cy.get('div.piece.wp.square-52').click(20, -90, {force: true})
       } else {
-        // to-do: waiting for oponent move
+        // to-do: waiting for opponent move
+        cy.get('div[data-ply="1"]').should('be.visible')
         cy.get('div.piece.bp.square-47').click()
         cy.get('div.piece.bp.square-47').click(20, -90, {force: true})
       }

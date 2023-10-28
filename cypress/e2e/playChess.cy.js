@@ -18,13 +18,27 @@ describe('before: start chess game', () => {
     // to-do: develop waiting for oponent connection method..
     cy.wait(5000)
     cy.getMyPlayerColor().then(myColor => {
+      let coordinatesStart = ''
+      let coordinatesMoveTo = ''
+      
+      // if white has first turn, move with king pawn by two sqares
+      // if black has first turn, move with king pawn by one sqare
       if (myColor === 'white') {
-        cy.get('div.piece.wp.square-52').click()
-        cy.get('div.piece.wp.square-52').click(20, -90, {force: true})
+        coordinatesStart = '52'
+        coordinatesMoveTo = '54'
+        cy.pawnMove(
+          myColor, 
+          coordinatesStart, 
+          coordinatesMoveTo  
+        )
       } else {
-        cy.get('div[data-ply="1"]').should('be.visible')
-        cy.get('div.piece.bp.square-47').click()
-        cy.get('div.piece.bp.square-47').click(20, -90, {force: true})
+        coordinatesStart = '57'
+        coordinatesMoveTo = '56'
+        cy.pawnMove(
+          myColor, 
+          coordinatesStart, 
+          coordinatesMoveTo  
+        )
       }
     })
   })

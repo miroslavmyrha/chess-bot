@@ -84,3 +84,71 @@ Cypress.Commands.add('getMyPlayerColor', (
         }
     })
 })
+
+Cypress.Commands.add('pawnMove', (
+  myPlayerColor, coordinatesStart, coordinatesMoveTo   
+  ) => {  
+    if (myPlayerColor === 'white') {
+      // select which pawn you want to move
+      cy.get('div.piece.wp.square-' + coordinatesStart)
+        .click()
+
+      // 57 ==> 56, 55 
+      // 52 ==> 53, 54
+
+      // 1st number
+      // coordinatesStart.slice(1)
+      // 2nd number
+      // coordinatesStart.slice(0, -1)
+
+      // compute how many squares you want to move
+      const squaresToMove = coordinatesMoveTo.slice(1) - coordinatesStart.slice(1)
+
+      if ( squaresToMove === 2 ) {
+        cy.get('div.piece.wp.square-' + coordinatesStart)
+          .click(
+            20, -90, 
+            {force: true}
+          )
+      } else if ( squaresToMove === 1 ) {
+        cy.get('div.piece.wp.square-' + coordinatesStart)
+          .click(
+            20, -45, 
+            {force: true}
+          )
+      } else {
+        throw new Error('Ilegal move.')
+      }
+
+    } else {
+
+      // compute how many squares you want to move
+      const squaresToMove = coordinatesStart.slice(1) - coordinatesMoveTo.slice(1)
+
+      // waiting for opponent move
+      cy.get('div[data-ply="1"]').should('be.visible')
+
+      // select which pawn you want to move
+      cy.get('div.piece.bp.square-' + coordinatesStart).click()
+      
+      if ( squaresToMove === 2 ) {
+        cy.get('div.piece.bp.square-' + coordinatesStart)
+          .click(
+            20, -90, 
+            {force: true}
+          )
+      } else if ( squaresToMove === 1 ) {
+        cy.get('div.piece.bp.square-' + coordinatesStart)
+          .click(
+            20, -45, 
+            {force: true}
+          )
+      } else {
+        throw new Error('Ilegal move.')
+      }
+    }
+})
+
+
+
+

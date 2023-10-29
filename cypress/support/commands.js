@@ -84,3 +84,98 @@ Cypress.Commands.add('getMyPlayerColor', (
         }
     })
 })
+
+Cypress.Commands.add('move', (
+  figure , myPlayerColor, coordinatesStart, coordinatesMoveTo   
+  ) => {  
+
+    let figurePrefix = ''
+
+    if (myPlayerColor === 'white') {
+      switch (figure) {
+        case 'king':
+          figurePrefix = 'wk'
+          break
+        case 'queen':
+          figurePrefix = 'wq'
+          break
+        case 'rook':
+          figurePrefix = 'wr'
+          break
+        case 'bishop':
+          figurePrefix = 'wb'
+          break
+        case 'knight': 
+          figurePrefix = 'wn'
+          break
+        case 'pawn': 
+          figurePrefix = 'wp'
+          break
+      }
+      
+
+      // 57 ==> 56, 55 
+      // 52 ==> 53, 54
+
+      // 1st number y-axe
+      // coordinatesStart.slice(1)
+      // 2nd number x-axe
+      // coordinatesStart.slice(0, -1)
+
+      // 66 one square
+
+      // 528x528 chessboard
+
+      let axeY = coordinatesMoveTo.slice(1)
+      let axeX = coordinatesMoveTo.slice(0, -1)
+
+      // select which figure you want to move
+      cy.get('div.piece.' + figurePrefix + '.square-' + coordinatesStart).click()
+      // move
+      cy.get('svg.coordinates')
+        .click(
+          // x, y
+          (axeX * 66) - 33, 528 - (axeY * 66) + 33, 
+          {force: true}
+        )
+
+    } else {
+
+      switch (figure) {
+        case 'king':
+          figurePrefix = 'bk'
+          break
+        case 'queen':
+          figurePrefix = 'bq'
+          break
+        case 'rook':
+          figurePrefix = 'br'
+          break
+        case 'bishop':
+          figurePrefix = 'bb'
+          break
+        case 'knight': 
+          figurePrefix = 'bn'
+          break
+        case 'pawn': 
+          figurePrefix = 'bp'
+          break
+      }
+
+      let axeY = coordinatesMoveTo.slice(1)
+      let axeX = coordinatesMoveTo.slice(0, -1)
+
+      // waiting for opponent move
+      cy.get('div[data-ply="1"]').should('be.visible')
+
+      // select which figure you want to move
+      cy.get('div.piece.' + figurePrefix + '.square-' + coordinatesStart).click()
+      // move
+      cy.get('svg.coordinates')
+      .click(
+        // x, y
+        528 - (axeX * 66) + 33, (axeY * 66) - 33, 
+        {force: true}
+      )
+    }
+})

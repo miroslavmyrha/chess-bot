@@ -18,13 +18,38 @@ describe('before: start chess game', () => {
     // to-do: develop waiting for oponent connection method..
     cy.wait(5000)
     cy.getMyPlayerColor().then(myColor => {
+      let coordinatesStart = ''
+      let coordinatesMoveTo = ''
+
       if (myColor === 'white') {
-        cy.get('div.piece.wp.square-52').click()
-        cy.get('div.piece.wp.square-52').click(20, -90, {force: true})
+        // x, y
+        coordinatesStart = '52'
+        coordinatesMoveTo = '54'
+        cy.move(
+          'pawn',
+          myColor, 
+          coordinatesStart, 
+          coordinatesMoveTo  
+        )
       } else {
-        cy.get('div[data-ply="1"]').should('be.visible')
-        cy.get('div.piece.bp.square-47').click()
-        cy.get('div.piece.bp.square-47').click(20, -90, {force: true})
+        // coordinatesStart = '28'
+        // coordinatesMoveTo = '36'
+        // cy.move(
+        //   'knight',
+        //   myColor, 
+        //   coordinatesStart, 
+        //   coordinatesMoveTo
+        // )
+
+          
+        coordinatesStart = '57'
+        coordinatesMoveTo = '55'
+        cy.move(
+          'pawn',
+          myColor, 
+          coordinatesStart, 
+          coordinatesMoveTo  
+        )
       }
     })
   })

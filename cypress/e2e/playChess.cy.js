@@ -20,21 +20,32 @@ describe('before: start chess game', () => {
     cy.getMyPlayerColor().then(myColor => {
       let coordinatesStart = ''
       let coordinatesMoveTo = ''
-      
-      // if white has first turn, move with king pawn by two sqares
-      // if black has first turn, move with king pawn by one sqare
+
       if (myColor === 'white') {
+        // x, y
         coordinatesStart = '52'
         coordinatesMoveTo = '54'
-        cy.pawnMove(
+        cy.move(
+          'pawn',
           myColor, 
           coordinatesStart, 
           coordinatesMoveTo  
         )
       } else {
+        // coordinatesStart = '28'
+        // coordinatesMoveTo = '36'
+        // cy.move(
+        //   'knight',
+        //   myColor, 
+        //   coordinatesStart, 
+        //   coordinatesMoveTo
+        // )
+
+          
         coordinatesStart = '57'
-        coordinatesMoveTo = '56'
-        cy.pawnMove(
+        coordinatesMoveTo = '55'
+        cy.move(
+          'pawn',
           myColor, 
           coordinatesStart, 
           coordinatesMoveTo  

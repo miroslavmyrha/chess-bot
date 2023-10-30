@@ -20,37 +20,35 @@ describe('before: start chess game', () => {
     cy.getMyPlayerColor().then(myColor => {
       let coordinatesStart = ''
       let coordinatesMoveTo = ''
+      let figure = ''
 
       if (myColor === 'white') {
-        // x, y
+        // 'xy'
+        figure = 'pawn'
         coordinatesStart = '52'
         coordinatesMoveTo = '54'
-        cy.move(
-          'pawn',
-          myColor, 
-          coordinatesStart, 
-          coordinatesMoveTo  
-        )
       } else {
-        // coordinatesStart = '28'
-        // coordinatesMoveTo = '36'
+        figure = 'knight'
+        coordinatesStart = '28'
+        coordinatesMoveTo = '36'
+      }
+
+      cy.move(
+        figure,
+        myColor, 
+        coordinatesStart, 
+        coordinatesMoveTo  
+      )
+
+        // coordinatesStart = '57'
+        // coordinatesMoveTo = '55'
         // cy.move(
-        //   'knight',
+        //   'pawn',
         //   myColor, 
         //   coordinatesStart, 
-        //   coordinatesMoveTo
+        //   coordinatesMoveTo  
         // )
 
-          
-        coordinatesStart = '57'
-        coordinatesMoveTo = '55'
-        cy.move(
-          'pawn',
-          myColor, 
-          coordinatesStart, 
-          coordinatesMoveTo  
-        )
-      }
     })
   })
 })

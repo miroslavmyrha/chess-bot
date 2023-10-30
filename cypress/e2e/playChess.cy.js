@@ -4,6 +4,22 @@ import playerLevel from '../fixtures/playerLevel.json'
 
 const selectedLanguageMutation = 'cz'
 
+function tranformNotation(chessNotationCoordinates) {  
+  let axeY = chessNotationCoordinates.slice(1)
+  let axeX = chessNotationCoordinates.slice(0, -1)
+  const notationSheet = {
+      a: "1",
+      b: "2",
+      c: "3",
+      d: "4",
+      e: "5",
+      f: "6",
+      g: "7",
+      h: "8"
+  }
+  return notationSheet[axeX] + axeY
+}
+
 describe('before: start chess game', () => {
   before(() => {
     // x, y
@@ -25,12 +41,12 @@ describe('before: start chess game', () => {
       if (myColor === 'white') {
         // 'xy'
         figure = 'pawn'
-        coordinatesStart = '52'
-        coordinatesMoveTo = '54'
+        coordinatesStart = tranformNotation('e2')
+        coordinatesMoveTo = tranformNotation('e4')
       } else {
         figure = 'knight'
-        coordinatesStart = '28'
-        coordinatesMoveTo = '36'
+        coordinatesStart = tranformNotation('b8')
+        coordinatesMoveTo = tranformNotation('c6')
       }
 
       cy.move(

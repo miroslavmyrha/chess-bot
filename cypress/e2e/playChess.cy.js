@@ -56,6 +56,17 @@ describe('before: start chess game', () => {
         coordinatesMoveTo  
       )
 
+      // get request test to stockfish.online in FEN notation
+      const testNotationCodeFEN = 'r2q1rk1/ppp2ppp/3bbn2/3p4/8/1B1P4/PPP2PPP/RNB1QRK1 w - - 5 11&depth=5&mode=eval'
+
+      cy.request('GET', 'https://stockfish.online/api/stockfish.php?fen=' + testNotationCodeFEN).then(response => {
+        expect(response.status).to.eq(200)
+        const parsed = JSON.parse(response.body)
+        // cy.writeFile('response.json', response.body)
+        expect(parsed.success).to.eq(true)
+        expect(parsed.data).to.eq("Total evaluation: -1.52 (white side)")
+      })
+
         // coordinatesStart = '57'
         // coordinatesMoveTo = '55'
         // cy.move(

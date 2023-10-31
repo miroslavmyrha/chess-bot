@@ -57,16 +57,30 @@ describe('before: start chess game', () => {
         coordinatesMoveTo  
       )
 
-      // get request test to stockfish.online in FEN notation
-      // const testNotationCodeFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 5 11&depth=5&mode=eval'
 
-      cy.task('parseAlgebraicToFEN', ['f3', 'c6']).then(testNotationCodeFEN => {
-        cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
-          expect(response.status).to.eq(200)
-          const parsed = JSON.parse(response.body)
-          cy.writeFile('response.json', response.body)
-          expect(parsed.success).to.eq(true)
-          //expect(parsed.data).to.eq("Total evaluation: -1.52 (white side)")
+      // collect a few moves to get response from stockfish.online api
+
+      // TO-DO - get figures to notation
+
+      cy.wait(50000)
+
+      let gameplayArrayFromChessCom = []
+
+      cy.get('div.move').find('div.white').each((moveWhite, index) => {
+        cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+          if (index === index2) {
+            gameplayArrayFromChessCom.push(moveWhite.text().trim())
+            gameplayArrayFromChessCom.push(moveBlack.text().trim())
+            cy.task('parseAlgebraicToFEN', gameplayArrayFromChessCom).then(testNotationCodeFEN => {
+              cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+                expect(response.status).to.eq(200)
+                const parsed = JSON.parse(response.body)
+                cy.writeFile('response.json', response.body)
+                window.alert(parsed.data)
+                expect(parsed.success).to.eq(true)
+              })
+            })
+          }
         })
       })
     })

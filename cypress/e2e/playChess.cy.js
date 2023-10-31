@@ -1,4 +1,5 @@
 import playerLevel from '../fixtures/playerLevel.json'
+import stockFishDifficulty from '../fixtures/stockFishDifficulty.json'
 
 // default 1000x660
 
@@ -57,25 +58,17 @@ describe('before: start chess game', () => {
       )
 
       // get request test to stockfish.online in FEN notation
-      const testNotationCodeFEN = 'r2q1rk1/ppp2ppp/3bbn2/3p4/8/1B1P4/PPP2PPP/RNB1QRK1 w - - 5 11&depth=5&mode=eval'
+      // const testNotationCodeFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 5 11&depth=5&mode=eval'
 
-      cy.request('GET', 'https://stockfish.online/api/stockfish.php?fen=' + testNotationCodeFEN).then(response => {
-        expect(response.status).to.eq(200)
-        const parsed = JSON.parse(response.body)
-        // cy.writeFile('response.json', response.body)
-        expect(parsed.success).to.eq(true)
-        expect(parsed.data).to.eq("Total evaluation: -1.52 (white side)")
+      cy.task('parseAlgebraicToFEN', ['f3', 'c6']).then(testNotationCodeFEN => {
+        cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+          expect(response.status).to.eq(200)
+          const parsed = JSON.parse(response.body)
+          cy.writeFile('response.json', response.body)
+          expect(parsed.success).to.eq(true)
+          //expect(parsed.data).to.eq("Total evaluation: -1.52 (white side)")
+        })
       })
-
-        // coordinatesStart = '57'
-        // coordinatesMoveTo = '55'
-        // cy.move(
-        //   'pawn',
-        //   myColor, 
-        //   coordinatesStart, 
-        //   coordinatesMoveTo  
-        // )
-
     })
   })
 })

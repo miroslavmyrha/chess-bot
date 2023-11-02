@@ -64,19 +64,44 @@ describe('before: start chess game', () => {
 
       cy.wait(50000)
 
-      let gameplayArrayFromChessCom = []
+      let gameplayMovesFromChessCom = []
 
       cy.get('div.move').find('div.white').each((moveWhite, index) => {
         cy.get('div.move').find('div.black').each((moveBlack, index2) => {
           if (index === index2) {
-            gameplayArrayFromChessCom.push(moveWhite.text().trim())
-            gameplayArrayFromChessCom.push(moveBlack.text().trim())
-            cy.task('parseAlgebraicToFEN', gameplayArrayFromChessCom).then(testNotationCodeFEN => {
+            //
+            cy.get('div.move').find('div.white').find('span.icon-font-chess').eq(index).then(el => {
+              if (!el.length) {
+                cy.log('nope')
+                gameplayMovesFromChessCom.push(moveWhite.text().trim())
+              } else {
+                cy.log('yep')
+                cy.get('div.move').find('div.white').find('span.icon-font-chess').eq(index).invoke('attr', 'data-figurine').then(attr => {
+                  cy.log('white:', attr)
+                  gameplayMovesFromChessCom.push(attr + moveWhite.text().trim())
+                })
+              }
+            })
+              
+            cy.get('div.move').find('div.black').find('span.icon-font-chess').eq(index2).then(el => {
+              if (!el.length) {
+                cy.log('nope')
+                gameplayMovesFromChessCom.push(moveBlack.text().trim())
+              } else {
+                cy.log('yep')
+                cy.get('div.move').find('div.black').find('span.icon-font-chess').eq(index2).invoke('attr', 'data-figurine').then(attr => {
+                  cy.log('black:', attr)
+                  gameplayMovesFromChessCom.push(attr + moveBlack.text().trim())
+                })
+              }  
+            }) 
+             
+            cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
               cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
                 expect(response.status).to.eq(200)
                 const parsed = JSON.parse(response.body)
                 cy.writeFile('response.json', response.body)
-                window.alert(parsed.data)
+                //window.alert(parsed.data)
                 expect(parsed.success).to.eq(true)
               })
             })

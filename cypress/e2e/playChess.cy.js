@@ -66,52 +66,71 @@ describe('before: start chess game', () => {
 
       // find which figure who moved, ještě rozdělovat barvy?
 
-      let pole = []
+      // let pole = []
 
-      cy.get('div.white.node').each(whiteNode => {
-        if (whiteNode.find('span').length) {
-          cy.wrap(whiteNode).find('span').invoke('attr', 'data-figurine').then(figurine =>{
-            window.alert(figurine)
-            pole.push('White: ' +  figurine)
-          })
-        } else {
-          window.alert('není')
-          pole.push('White:  Pawn')
-        }
-      })
-
-      cy.get('div.black.node').each((node, index) => {
-        if (node.find('span').length) {
-          cy.wrap(node[index]).find('span').invoke('attr', 'data-figurine').then(figurine =>{
-            window.alert(figurine)
-            pole.push('Black: ' +  figurine)
-          })
-        } else {
-          window.alert('není')
-          pole.push('Black:  Pawn')
-        }
-      })
-
-      cy.writeFile('tahy.txt', pole)
-
-
-      // cy.get('div.move').find('div.white').each((moveWhite, index) => {
-      //   cy.get('div.move').find('div.black').each((moveBlack, index2) => {
-      //     if (index === index2) { 
-      //       gameplayMovesFromChessCom.push(moveWhite.text().trim())
-      //       gameplayMovesFromChessCom.push(moveBlack.text().trim())
-      //       cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
-      //         cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
-      //           expect(response.status).to.eq(200)
-      //           const parsed = JSON.parse(response.body)
-      //           cy.writeFile('response.json', response.body)
-      //           //window.alert(parsed.data)
-      //           expect(parsed.success).to.eq(true)
-      //         })
+      // cy.get('div.move').each(moves => {
+      //   cy.wrap(moves).find('div.white.node').each((whiteNode, index) => {
+      //     if (whiteNode[index].find('span').length) {
+      //       cy.wrap(whiteNode[index]).find('span').invoke('attr', 'data-figurine').then(figurine => {
+      //         window.alert(figurine)
+      //         pole.push('White: ' +  figurine)
       //       })
+      //     } else {
+      //       window.alert('není')
+      //       pole.push('White:  Pawn')
+      //     }
+      //   })
+
+      //   cy.wrap(moves).find('div.white.node').each((blackNode, index) => {
+      //     if (blackNode[index].find('span').length) {
+      //       cy.wrap(blackNode[index]).find('span').invoke('attr', 'data-figurine').then(figurine => {
+      //         window.alert(figurine)
+      //         pole.push('Black: ' +  figurine)
+      //       })
+      //     } else {
+      //       window.alert('není')
+      //       pole.push('Black:  Pawn')
       //     }
       //   })
       // })
+
+      // cy.writeFile('tahy.txt', pole)
+
+        let gameplayMovesFromChessCom = []
+
+        cy.get('div.move').find('div.white').each((moveWhite, index) => {
+          cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+            if (index === index2) { 
+              if (moveWhite.find('span').length) {
+                moveWhite.find('span').invoke('text').then(figure => {
+                  gameplayMovesFromChessCom.push(figure + ' ' + moveWhite.text().trim())
+                })
+              } else {
+                gameplayMovesFromChessCom.push(moveWhite.text().trim())
+              }
+
+              if (moveBlack.find('span').length) {
+                moveBlack.find('span').invoke('text').then(figure => {
+                  gameplayMovesFromChessCom.push(figure + ' ' + moveBlack.text().trim())
+                })
+              } else {
+                gameplayMovesFromChessCom.push(moveBlack.text().trim())
+              }
+            
+              // cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
+              //   cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+              //     expect(response.status).to.eq(200)
+              //     const parsed = JSON.parse(response.body)
+              //     cy.writeFile('response.json', response.body)
+              //     //window.alert(parsed.data)
+              //     expect(parsed.success).to.eq(true)
+              //   })
+              // })
+            }
+          })
+        })
+
+        cy.writeFile('tahy.txt', gameplayMovesFromChessCom)
     })
   })
 })

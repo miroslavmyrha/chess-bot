@@ -1,18 +1,12 @@
 [
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White:  Pawn",
-  "White: N",
-  "White: B",
-  "White: N",
-  "White: N",
-  "White: N",
-  "White: B",
-  "White: B"
+  "e4",
+  "d5",
+  "d3",
+  "dxe4",
+  "dxe4",
+  "černý má figuru xd1+",
+  "bílý má figuru xd1",
+  "černý má figuru g4+",
+  "f3",
+  "černý má figuru e6"
 ]

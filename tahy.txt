@@ -1,0 +1,18 @@
+[
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White:  Pawn",
+  "White: N",
+  "White: B",
+  "White: N",
+  "White: N",
+  "White: N",
+  "White: B",
+  "White: B"
+]

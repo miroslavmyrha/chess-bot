@@ -64,50 +64,54 @@ describe('before: start chess game', () => {
 
       cy.wait(50000)
 
-      let gameplayMovesFromChessCom = []
+      // find which figure who moved, ještě rozdělovat barvy?
 
-      cy.get('div.move').find('div.white').each((moveWhite, index) => {
-        cy.get('div.move').find('div.black').each((moveBlack, index2) => {
-          if (index === index2) {
-            //
-            cy.get('div.move').find('div.white').find('span.icon-font-chess').eq(index).then(el => {
-              if (!el.length) {
-                cy.log('nope')
-                gameplayMovesFromChessCom.push(moveWhite.text().trim())
-              } else {
-                cy.log('yep')
-                cy.get('div.move').find('div.white').find('span.icon-font-chess').eq(index).invoke('attr', 'data-figurine').then(attr => {
-                  cy.log('white:', attr)
-                  gameplayMovesFromChessCom.push(attr + moveWhite.text().trim())
-                })
-              }
-            })
-              
-            cy.get('div.move').find('div.black').find('span.icon-font-chess').eq(index2).then(el => {
-              if (!el.length) {
-                cy.log('nope')
-                gameplayMovesFromChessCom.push(moveBlack.text().trim())
-              } else {
-                cy.log('yep')
-                cy.get('div.move').find('div.black').find('span.icon-font-chess').eq(index2).invoke('attr', 'data-figurine').then(attr => {
-                  cy.log('black:', attr)
-                  gameplayMovesFromChessCom.push(attr + moveBlack.text().trim())
-                })
-              }  
-            }) 
-             
-            cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
-              cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
-                expect(response.status).to.eq(200)
-                const parsed = JSON.parse(response.body)
-                cy.writeFile('response.json', response.body)
-                //window.alert(parsed.data)
-                expect(parsed.success).to.eq(true)
-              })
-            })
-          }
-        })
+      let pole = []
+
+      cy.get('div.white.node').each(whiteNode => {
+        if (whiteNode.find('span').length) {
+          cy.wrap(whiteNode).find('span').invoke('attr', 'data-figurine').then(figurine =>{
+            window.alert(figurine)
+            pole.push('White: ' +  figurine)
+          })
+        } else {
+          window.alert('není')
+          pole.push('White:  Pawn')
+        }
       })
+
+      cy.get('div.black.node').each((node, index) => {
+        if (node.find('span').length) {
+          cy.wrap(node[index]).find('span').invoke('attr', 'data-figurine').then(figurine =>{
+            window.alert(figurine)
+            pole.push('Black: ' +  figurine)
+          })
+        } else {
+          window.alert('není')
+          pole.push('Black:  Pawn')
+        }
+      })
+
+      cy.writeFile('tahy.txt', pole)
+
+
+      // cy.get('div.move').find('div.white').each((moveWhite, index) => {
+      //   cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+      //     if (index === index2) { 
+      //       gameplayMovesFromChessCom.push(moveWhite.text().trim())
+      //       gameplayMovesFromChessCom.push(moveBlack.text().trim())
+      //       cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
+      //         cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+      //           expect(response.status).to.eq(200)
+      //           const parsed = JSON.parse(response.body)
+      //           cy.writeFile('response.json', response.body)
+      //           //window.alert(parsed.data)
+      //           expect(parsed.success).to.eq(true)
+      //         })
+      //       })
+      //     }
+      //   })
+      // })
     })
   })
 })

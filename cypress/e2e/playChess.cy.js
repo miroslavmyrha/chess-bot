@@ -31,37 +31,19 @@ describe('before: start chess game', () => {
     })
   })
 
-  it('Pawn´s first move test', () => {
+  it('Pawn´s first move test', function () {
     // to-do: develop waiting for oponent connection method..
     cy.wait(5000)
     cy.getMyPlayerColor().then(myColor => {
-      let coordinatesStart = ''
-      let coordinatesMoveTo = ''
-      let figure = ''
-
       if (myColor === 'white') {
-        // 'xy'
-        figure = 'pawn'
-        coordinatesStart = tranformNotation('e2')
-        coordinatesMoveTo = tranformNotation('e4')
-      } else {
-        figure = 'knight'
-        coordinatesStart = tranformNotation('b8')
-        coordinatesMoveTo = tranformNotation('c6')
-      }
 
-      cy.move(
-        figure,
-        myColor, 
-        coordinatesStart, 
-        coordinatesMoveTo  
-      )
+        cy.move(
+          myColor, 
+          tranformNotation('e2'),
+          tranformNotation('e4') 
+        )
 
-      // collect a few moves to get response from stockfish.online api
-
-      // TO-DO - get figures to notation
-
-      cy.wait(50000)
+        cy.get('div[data-ply="' + 2 + '"]').should('be.visible')
 
         let gameplayMovesFromChessCom = []
 
@@ -73,7 +55,7 @@ describe('before: start chess game', () => {
               } else {
                 gameplayMovesFromChessCom.push(moveWhite.text().trim())
               }
-
+  
               if (moveBlack.find('span').length) {
                 gameplayMovesFromChessCom.push(moveBlack.find('span').attr('data-figurine') + moveBlack.text().trim())
               } else {
@@ -85,15 +67,36 @@ describe('before: start chess game', () => {
                   expect(response.status).to.eq(200)
                   const parsed = JSON.parse(response.body)
                   cy.writeFile('response.json', response.body)
-                  //window.alert(parsed.data)
                   expect(parsed.success).to.eq(true)
+                  // start
+                  cy.move(
+                    myColor, 
+                    tranformNotation(parsed.data.slice(9, 11)),
+                    tranformNotation(parsed.data.slice(11, 13))
+                  )
                 })
               })
             }
           })
         })
-
         cy.writeFile('tahy.txt', gameplayMovesFromChessCom)
+
+        // const start = (this.taskToBestMove).slice(2)
+        // const moveTo = (this.taskToBestMove).slice(0, 2)
+        
+
+        // cy.move(
+        //   myColor, 
+        //   tranformNotation(start),
+        //   tranformNotation(moveTo) 
+        // )
+      } else {
+        window.alert('black')
+      }
+
+        // collect a few moves to get response from stockfish.online api
+
+      // TO-DO - get figures to notation
     })
   })
 })

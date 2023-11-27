@@ -86,10 +86,9 @@ Cypress.Commands.add('getMyPlayerColor', (
 })
 
 Cypress.Commands.add('move', (
-  figure , myPlayerColor, coordinatesStart, coordinatesMoveTo   
+  myPlayerColor, coordinatesStart, coordinatesMoveTo   
   ) => {  
 
-    let figurePrefix = ''
     let colorPrefix =''
 
     if (myPlayerColor === 'white') {
@@ -97,28 +96,6 @@ Cypress.Commands.add('move', (
     } else {
       colorPrefix = 'b'
     }
-
-    switch (figure) {
-      case 'king':
-        figurePrefix = colorPrefix + 'k'
-        break
-      case 'queen':
-        figurePrefix = colorPrefix + 'q'
-        break
-      case 'rook':
-        figurePrefix = colorPrefix + 'r'
-        break
-      case 'bishop':
-        figurePrefix = colorPrefix + 'b'
-        break
-      case 'knight': 
-        figurePrefix = colorPrefix + 'n'
-        break
-      case 'pawn': 
-        figurePrefix = colorPrefix + 'p'
-        break
-    }
-      
 
       // 57 ==> 56, 55 
       // 52 ==> 53, 54
@@ -138,27 +115,49 @@ Cypress.Commands.add('move', (
       cy.get('div[data-ply="1"]').should('be.visible')        
     }
 
-    let axeY = coordinatesMoveTo.slice(1)
-    let axeX = coordinatesMoveTo.slice(0, -1)
+    let moveToaxeY = coordinatesMoveTo.slice(1)
+    let moveToaxeX = coordinatesMoveTo.slice(0, -1)
+    let startMoveaxeY = coordinatesStart.slice(1)
+    let startMoveaxeX = coordinatesStart.slice(0, -1)
     let coordinates = ''
+    let startCoordinates = ''
 
     // select which figure you want to move
-    cy.get('div.piece.' + figurePrefix + '.square-' + coordinatesStart).click()
+    // cy.get('div.piece.' + figurePrefix + '.square-' + coordinatesStart).click()
 
-    // compute coordinates
+
+    // compute coordinates move start
+    switch (myPlayerColor) {
+    case 'white':
+      startCoordinates = {x: (startMoveaxeX * 66) - 33, y: 528 - (startMoveaxeY * 66) + 33}
+      break
+    case 'black':
+      startCoordinates = {x: 528 - (startMoveaxeX * 66) + 33, y: (startMoveaxeY * 66) - 33}
+      break
+    }
+    // move from
+    cy.get('svg.coordinates')
+      .click(
+        // x, y
+        startCoordinates.x, startCoordinates.y, 
+        {force: true}
+      )
+    
+
+    // compute coordinates move to
     switch (myPlayerColor) {
       case 'white':
-        coordinates = {x: (axeX * 66) - 33, y: 528 - (axeY * 66) + 33}
+        coordinates = {x: (moveToaxeX * 66) - 33, y: 528 - (moveToaxeY * 66) + 33}
         break
       case 'black':
-        coordinates = {x: 528 - (axeX * 66) + 33, y: (axeY * 66) - 33}
+        coordinates = {x: 528 - (moveToaxeX * 66) + 33, y: (moveToaxeY * 66) - 33}
         break
     }
-    // move
+    // move TO
     cy.get('svg.coordinates')
-    .click(
-      // x, y
-      coordinates.x, coordinates.y, 
-      {force: true}
-    )
+      .click(
+        // x, y
+        coordinates.x, coordinates.y, 
+        {force: true}
+      )
 })

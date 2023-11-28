@@ -31,7 +31,7 @@ describe('before: start chess game', () => {
     })
   })
 
-  it('Pawn´s first move test', function () {
+  it('Play chess to win', function () {
     // to-do: develop waiting for oponent connection method..
     cy.wait(5000)
     cy.getMyPlayerColor().then(myColor => {
@@ -43,60 +43,92 @@ describe('before: start chess game', () => {
           tranformNotation('e4') 
         )
 
-        cy.get('div[data-ply="' + 2 + '"]').should('be.visible')
+        for (let i = 1; i < 130; i++) {
 
-        let gameplayMovesFromChessCom = []
+          cy.get('div[data-ply="' + i*2 + '"]').should('be.visible')
 
-        cy.get('div.move').find('div.white').each((moveWhite, index) => {
-          cy.get('div.move').find('div.black').each((moveBlack, index2) => {
-            if (index === index2) { 
-              if (moveWhite.find('span').length) {
-                gameplayMovesFromChessCom.push(moveWhite.find('span').attr('data-figurine') + moveWhite.text().trim())
-              } else {
-                gameplayMovesFromChessCom.push(moveWhite.text().trim())
+          let gameplayMovesFromChessCom = []
+
+          cy.get('div.move').find('div.white').each((moveWhite, index) => {
+            cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+              if (index === index2) { 
+                if (moveWhite.find('span').length) {
+                  gameplayMovesFromChessCom.push(moveWhite.find('span').attr('data-figurine') + moveWhite.text().trim())
+                } else {
+                  gameplayMovesFromChessCom.push(moveWhite.text().trim())
+                }
+    
+                if (moveBlack.find('span').length) {
+                  gameplayMovesFromChessCom.push(moveBlack.find('span').attr('data-figurine') + moveBlack.text().trim())
+                } else {
+                  gameplayMovesFromChessCom.push(moveBlack.text().trim())
+                }
               }
-  
-              if (moveBlack.find('span').length) {
-                gameplayMovesFromChessCom.push(moveBlack.find('span').attr('data-figurine') + moveBlack.text().trim())
-              } else {
-                gameplayMovesFromChessCom.push(moveBlack.text().trim())
-              }
-            
-              cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
-                cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
-                  expect(response.status).to.eq(200)
-                  const parsed = JSON.parse(response.body)
-                  cy.writeFile('response.json', response.body)
-                  expect(parsed.success).to.eq(true)
-                  // start
-                  cy.move(
-                    myColor, 
-                    tranformNotation(parsed.data.slice(9, 11)),
-                    tranformNotation(parsed.data.slice(11, 13))
-                  )
-                })
-              })
-            }
+            })
           })
-        })
-        cy.writeFile('tahy.txt', gameplayMovesFromChessCom)
 
-        // const start = (this.taskToBestMove).slice(2)
-        // const moveTo = (this.taskToBestMove).slice(0, 2)
-        
-
-        // cy.move(
-        //   myColor, 
-        //   tranformNotation(start),
-        //   tranformNotation(moveTo) 
-        // )
+          cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
+            cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+              expect(response.status).to.eq(200)
+              const parsed = JSON.parse(response.body)
+              expect(parsed.success).to.eq(true)
+              cy.move(
+                myColor, 
+                tranformNotation(parsed.data.slice(9, 11)),
+                tranformNotation(parsed.data.slice(11, 13))
+              )
+            })
+          })
+        }
       } else {
-        window.alert('black')
+       
+        cy.get('div[data-ply="' + 1 + '"]').should('be.visible')
+
+        cy.move(
+          myColor, 
+          tranformNotation('e7'),
+          tranformNotation('e5') 
+        )
+
+        for (let i = 3; i < 130; i++) {
+          if (i % 2 !== 0) {
+            cy.get('div[data-ply="' + i + '"]').should('be.visible')
+          }
+          
+          let gameplayMovesFromChessCom = []
+
+          cy.get('div.move').find('div.white').each((moveWhite, index) => {
+            cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+              if (index === index2) { 
+                if (moveWhite.find('span').length) {
+                  gameplayMovesFromChessCom.push(moveWhite.find('span').attr('data-figurine') + moveWhite.text().trim())
+                } else {
+                  gameplayMovesFromChessCom.push(moveWhite.text().trim())
+                }
+    
+                if (moveBlack.find('span').length) {
+                  gameplayMovesFromChessCom.push(moveBlack.find('span').attr('data-figurine') + moveBlack.text().trim())
+                } else {
+                  gameplayMovesFromChessCom.push(moveBlack.text().trim())
+                }
+              }
+            })
+          })
+
+          cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
+            cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+              expect(response.status).to.eq(200)
+              const parsed = JSON.parse(response.body)
+              expect(parsed.success).to.eq(true)
+              cy.move(
+                myColor, 
+                tranformNotation(parsed.data.slice(9, 11)),
+                tranformNotation(parsed.data.slice(11, 13))
+              )
+            })
+          })
+        }
       }
-
-        // collect a few moves to get response from stockfish.online api
-
-      // TO-DO - get figures to notation
     })
   })
 })

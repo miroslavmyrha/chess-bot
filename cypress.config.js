@@ -5,7 +5,7 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: 'https://www.chess.com',
     stockFishUrl: 'https://stockfish.online/api/stockfish.php?fen=',
-    defaultCommandTimeout: 100000,
+    defaultCommandTimeout: 200000,
     setupNodeEvents(on, config) {
       // implement node event listeners here
       on('task', {

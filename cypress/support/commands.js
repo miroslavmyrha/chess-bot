@@ -1,4 +1,21 @@
 import languageMutationObject from './../fixtures/languageMutations.json'
+import stockFishDifficulty from './../fixtures/stockFishDifficulty.json'
+
+  // test moving
+  // 57 ==> 56, 55 
+  // 52 ==> 53, 54
+
+  // 1st number y-axe
+  // coordinatesStart.slice(1)
+  // 2nd number x-axe
+  // coordinatesStart.slice(0, -1)
+
+  // 66 one square
+
+  // 528x528 chessboard
+
+const CHESSBOARD_SIZE = 528
+const SQUARE_SIZE = 66
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -29,41 +46,41 @@ import languageMutationObject from './../fixtures/languageMutations.json'
 
 Cypress.Commands.add('startChessGame', (
   chessGameParametersObject
-  ) => {
-    cy.visit('/')
+    ) => {
+      cy.visit('/')
 
-    cy.get('div')
-      .contains(
-        languageMutationObject[chessGameParametersObject.languageMutation].playOnline
-      )
-      .click()
+      cy.get('div')
+        .contains(
+          languageMutationObject[chessGameParametersObject.languageMutation].playOnline
+        )
+        .click()
 
-    cy.get('label[for="' + chessGameParametersObject.playerLevel + '"]')
-      .click()
+      cy.get('label[for="' + chessGameParametersObject.playerLevel + '"]')
+        .click()
 
-    cy.get('button')
-      .contains(
-        languageMutationObject[chessGameParametersObject.languageMutation].cookiesReject
-      )
-      .should('be.visible')
-      .click()
+      cy.get('button')
+        .contains(
+          languageMutationObject[chessGameParametersObject.languageMutation].cookiesReject
+        )
+        .should('be.visible')
+        .click()
 
-    cy.get('button[type="submit"]')
-      .filter(':visible')
-      .click()
+      cy.get('button[type="submit"]')
+        .filter(':visible')
+        .click()
 
-    cy.get('button[type="button"]')
-      .contains(
-        languageMutationObject[chessGameParametersObject.languageMutation].playButton
-      )
-      .click()
+      cy.get('button[type="button"]')
+        .contains(
+          languageMutationObject[chessGameParametersObject.languageMutation].playButton
+        )
+        .click()
 
-    cy.get('button[aria-label="Close"]')
-      .click()
+      cy.get('button[aria-label="Close"]')
+        .click()
 
-    cy.get('button[data-cy="new-game-index-play"]')
-      .should('be.visible')
-      .click()
+      cy.get('button[data-cy="new-game-index-play"]')
+        .should('be.visible')
+        .click()
 })
 
 Cypress.Commands.add('getMyPlayerColor', (
@@ -87,77 +104,71 @@ Cypress.Commands.add('getMyPlayerColor', (
 
 Cypress.Commands.add('move', (
   myPlayerColor, coordinatesStart, coordinatesMoveTo   
-  ) => {  
+    ) => {  
+      let startCoordinates = calculateChessboardCoordinates(myPlayerColor, coordinatesStart)
+      let moveToCoordinates = calculateChessboardCoordinates(myPlayerColor, coordinatesMoveTo)
 
-    let colorPrefix =''
+      cy.get('svg.coordinates')
+        .click(
+          startCoordinates.x, startCoordinates.y,
+          {force: true}
+        )
+        .click(
+          moveToCoordinates.x, moveToCoordinates.y,
+          {force: true}
+        )
+})
 
-    if (myPlayerColor === 'white') {
-      colorPrefix = 'w'
-    } else {
-      colorPrefix = 'b'
-    }
+function calculateChessboardCoordinates(myPlayerColor, coordinates) {
+  let axeY = coordinates.slice(1)
+  let axeX = coordinates.slice(0, -1)
 
-      // 57 ==> 56, 55 
-      // 52 ==> 53, 54
-
-      // 1st number y-axe
-      // coordinatesStart.slice(1)
-      // 2nd number x-axe
-      // coordinatesStart.slice(0, -1)
-
-      // 66 one square
-
-      // 528x528 chessboard
-
-
-    if (myPlayerColor === 'black') {
-      // waiting for opponent move
-      cy.get('div[data-ply="1"]').should('be.visible')        
-    }
-
-    let moveToaxeY = coordinatesMoveTo.slice(1)
-    let moveToaxeX = coordinatesMoveTo.slice(0, -1)
-    let startMoveaxeY = coordinatesStart.slice(1)
-    let startMoveaxeX = coordinatesStart.slice(0, -1)
-    let coordinates = ''
-    let startCoordinates = ''
-
-    // select which figure you want to move
-    // cy.get('div.piece.' + figurePrefix + '.square-' + coordinatesStart).click()
-
-
-    // compute coordinates move start
-    switch (myPlayerColor) {
+  switch (myPlayerColor) {
     case 'white':
-      startCoordinates = {x: (startMoveaxeX * 66) - 33, y: 528 - (startMoveaxeY * 66) + 33}
+      coordinates = {x: (axeX * SQUARE_SIZE) - SQUARE_SIZE / 2, y: CHESSBOARD_SIZE - (axeY * SQUARE_SIZE) + SQUARE_SIZE / 2}
       break
     case 'black':
-      startCoordinates = {x: 528 - (startMoveaxeX * 66) + 33, y: (startMoveaxeY * 66) - 33}
+      coordinates = {x: CHESSBOARD_SIZE - (axeX * SQUARE_SIZE) + SQUARE_SIZE / 2, y: (axeY * SQUARE_SIZE) - SQUARE_SIZE / 2}
       break
-    }
-    // move from
-    cy.get('svg.coordinates')
-      .click(
-        // x, y
-        startCoordinates.x, startCoordinates.y, 
-        {force: true}
-      )
-    
+  }
+  return coordinates
+}
 
-    // compute coordinates move to
-    switch (myPlayerColor) {
-      case 'white':
-        coordinates = {x: (moveToaxeX * 66) - 33, y: 528 - (moveToaxeY * 66) + 33}
-        break
-      case 'black':
-        coordinates = {x: 528 - (moveToaxeX * 66) + 33, y: (moveToaxeY * 66) - 33}
-        break
-    }
-    // move TO
-    cy.get('svg.coordinates')
-      .click(
-        // x, y
-        coordinates.x, coordinates.y, 
-        {force: true}
-      )
+
+Cypress.Commands.add('scanMovesFromChessMoveList', (
+  ) => {
+
+    let gameplayMovesFromChessCom = []
+
+    cy.get('div.move').find('div.white').each((moveWhite, index) => {
+      cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+        if (index === index2) { 
+          if (moveWhite.find('span').length) {
+            gameplayMovesFromChessCom.push(moveWhite.find('span').attr('data-figurine') + moveWhite.text().trim())
+          } else {
+            gameplayMovesFromChessCom.push(moveWhite.text().trim())
+          }
+
+          if (moveBlack.find('span').length) {
+            gameplayMovesFromChessCom.push(moveBlack.find('span').attr('data-figurine') + moveBlack.text().trim())
+          } else {
+            gameplayMovesFromChessCom.push(moveBlack.text().trim())
+          }
+        }
+      })
+    })
+    return cy.wrap(gameplayMovesFromChessCom)
+})
+
+Cypress.Commands.add('getBestMove', (
+  gameplayMovesFromChessCom
+    ) => {
+      cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
+        cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+          expect(response.status).to.eq(200)
+          const parsed = JSON.parse(response.body)
+          expect(parsed.success).to.eq(true)
+          return parsed
+        })
+      })
 })

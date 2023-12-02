@@ -1,5 +1,4 @@
 import playerLevel from '../fixtures/playerLevel.json'
-import stockFishDifficulty from '../fixtures/stockFishDifficulty.json'
 
 // default 1000x660
 
@@ -63,24 +62,24 @@ describe('before: start chess game', () => {
 
         cy.move(
           myColor, 
-          tranformNotation('e7'),
-          tranformNotation('e5') 
+          tranformNotation('b8'),
+          tranformNotation('c6')
         )
 
         for (let i = 3; i < 130; i++) {
           if (i % 2 !== 0) {
             cy.get('div[data-ply="' + i + '"]').should('be.visible')
-          }
-          
-          cy.scanMovesFromChessMoveList().then(moveList => {
-            cy.getBestMove(moveList).then(bestMove => {
-              cy.move(
-                myColor, 
-                tranformNotation(bestMove.data.slice(9, 11)),
-                tranformNotation(bestMove.data.slice(11, 13))
-              )
+
+            cy.scanMovesFromChessMoveList().then(moveList => {
+              cy.getBestMove(moveList).then(bestMove => {
+                cy.move(
+                  myColor,
+                  tranformNotation(bestMove.data.slice(21, -2)),
+                  tranformNotation(bestMove.data.slice(23))
+                )
+              })
             })
-          })
+          }
         }
       }
     })

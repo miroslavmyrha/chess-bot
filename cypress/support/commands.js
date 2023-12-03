@@ -1,5 +1,5 @@
 import languageMutationObject from './../fixtures/languageMutations.json'
-import stockFishDifficulty from './../fixtures/stockFishDifficulty.json'
+import stockFishDepth from './../fixtures/stockFishDepth.json'
 
   // test moving
   // 57 ==> 56, 55 
@@ -140,8 +140,9 @@ Cypress.Commands.add('scanMovesFromChessMoveList', (
 
     let gameplayMovesFromChessCom = []
 
-    cy.get('div.move').find('div.white').each((moveWhite, index) => {
-      cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+    cy.get('div.move').find('div.black').each((moveBlack, index2) => {
+      cy.get('div.move').find('div.white').each((moveWhite, index) => {
+        // white scan
         if (index === index2) { 
           if (moveWhite.find('span').length) {
             gameplayMovesFromChessCom.push(moveWhite.find('span').attr('data-figurine') + moveWhite.text().trim())
@@ -164,7 +165,7 @@ Cypress.Commands.add('getBestMove', (
   gameplayMovesFromChessCom
     ) => {
       cy.task('parseAlgebraicToFEN', gameplayMovesFromChessCom).then(testNotationCodeFEN => {
-        cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDifficulty.difficutlty + '&mode=bestmove').then(response => {
+        cy.request('GET', Cypress.config('stockFishUrl') + testNotationCodeFEN + '&depth=' + stockFishDepth.depth + '&mode=bestmove').then(response => {
           expect(response.status).to.eq(200)
           const parsed = JSON.parse(response.body)
           expect(parsed.success).to.eq(true)

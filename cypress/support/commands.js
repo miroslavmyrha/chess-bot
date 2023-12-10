@@ -136,28 +136,16 @@ function calculateChessboardCoordinates(myPlayerColor, coordinates) {
 
 
 Cypress.Commands.add('scanMovesFromChessMoveList', (
-  ) => {
+    ) => {
+      let gameplayMovesFromChessCom = []
 
-    let gameplayMovesFromChessCom = []
-
-    cy.get('div.move').find('div.black').each((moveBlack, index2) => {
-      cy.get('div.move').find('div.white').each((moveWhite, index) => {
-        // white scan
-        if (index === index2) { 
-          if (moveWhite.find('span').length) {
-            gameplayMovesFromChessCom.push(moveWhite.find('span').attr('data-figurine') + moveWhite.text().trim())
-          } else {
-            gameplayMovesFromChessCom.push(moveWhite.text().trim())
-          }
-
-          if (moveBlack.find('span').length) {
-            gameplayMovesFromChessCom.push(moveBlack.find('span').attr('data-figurine') + moveBlack.text().trim())
-          } else {
-            gameplayMovesFromChessCom.push(moveBlack.text().trim())
-          }
+      cy.get('div.node').each((moves) => {
+        if (moves.find('span').length) {
+          gameplayMovesFromChessCom.push(moves.find('span').attr('data-figurine') + moves.text().trim())
+        } else {
+          gameplayMovesFromChessCom.push(moves.text().trim())
         }
       })
-    })
     return cy.wrap(gameplayMovesFromChessCom)
 })
 

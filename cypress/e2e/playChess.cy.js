@@ -74,8 +74,10 @@ describe('before: start chess game', () => {
               cy.getBestMove(moveList).then(bestMove => {
                 cy.move(
                   myColor,
-                  tranformNotation(bestMove.data.slice(21, -2)),
-                  tranformNotation(bestMove.data.slice(23))
+                  tranformNotation(bestMove.data.slice(9, 11)),
+                  tranformNotation(bestMove.data.slice(11, 13))
+                  // tranformNotation(bestMove.data.slice(21, -2)),
+                  // tranformNotation(bestMove.data.slice(23))
                 )
               })
             })

@@ -139,11 +139,11 @@ Cypress.Commands.add('scanMovesFromChessMoveList', (
     ) => {
       let gameplayMovesFromChessCom = []
 
-      cy.get('div.node').each((moves) => {
-        if (moves.find('span').length) {
-          gameplayMovesFromChessCom.push(moves.find('span').attr('data-figurine') + moves.text().trim())
+      cy.get('div.node').each((move) => {
+        if (move.find('span').length) {
+          gameplayMovesFromChessCom.push(move.find('span').attr('data-figurine') + move.text().trim())
         } else {
-          gameplayMovesFromChessCom.push(moves.text().trim())
+          gameplayMovesFromChessCom.push(move.text().trim())
         }
       })
     return cy.wrap(gameplayMovesFromChessCom)

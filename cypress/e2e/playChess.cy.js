@@ -32,7 +32,8 @@ describe('before: start chess game', () => {
 
   it('Play chess to win', function () {
     // to-do: develop waiting for oponent connection method..
-    cy.wait(5000)
+    cy.get('[data-cy="move-list"]').should('be.visible')
+    // cy.wait(5000)
     cy.getMyPlayerColor().then(myColor => {
       if (myColor === 'white') {
 

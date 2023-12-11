@@ -2,7 +2,7 @@
 
 chess bot on chess.com
 
-The goal of this project is create chess bot for demonstrate that it is feasible.
+The goal of this project is to create a chess bot to demonstrate that it is feasible.
 
 **Please don't cheat!** - It is just for demo.
 
@@ -12,8 +12,8 @@ The goal of this project is create chess bot for demonstrate that it is feasible
 
 **Used technologies and pages:**
 
-- [chess.com](https://www.chess.com/) is most popular chess website and mobile application for playing chess.
-- [stockfish.online](https://stockfish.online/) - stockfish is most popular and powerfull chess engine which can evaluate best move with depth of moves.
+- [chess.com](https://www.chess.com/) is the most popular chess website and mobile application for playing chess.
+- [stockfish.online](https://stockfish.online/) - stockfish is the most popular and powerfull chess engine which can evaluate best move with depth of moves.
 - [cypress.io](https://cypress.io) is most popular JS/TS test framework for writing automated tests.
 
 ## How it works?

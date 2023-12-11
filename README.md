@@ -68,14 +68,15 @@ npm install
 ## Run chess
 
 ```bash
-npm cypress run
+npm cypress open
 ```
 
 optional you can use npx
 
 ```bash
-npx cypress run
+npx cypress open
 ```
+click on playChess.cy.js
 
 ## Contributing
 

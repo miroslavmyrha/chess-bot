@@ -4,7 +4,7 @@ chess bot on chess.com
 
 The goal of this project is create chess bot for demonstrate that it is feasible.
 
-**Please don't abuse it** - It is just for demo.
+**Please don't cheat!** - It is just for demo.
 
 ![ezgif com-video-to-gif](https://github.com/miroslavkadidlo/chess-bot/assets/16743203/4a716141-36a5-4dc2-91bf-1dc44cef590f)
 

@@ -28,7 +28,7 @@ There are also several settings available to change in /fixtures folder as:
 - playerLevel.json
 - stockFishDepth.json
 
-### 2. As first move are choosen:
+### 2. As first move are chosen:
 
 Before that, we need to check what color do we have. It will be find via cy.getMyPlayerColor()
 

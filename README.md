@@ -15,6 +15,7 @@ The goal of this project is to create a chess bot to demonstrate that it is feas
 - [chess.com](https://www.chess.com/) is the most popular chess website and mobile application for playing chess.
 - [stockfish.online](https://stockfish.online/) - stockfish is the most popular and powerfull chess engine which can evaluate best move with depth of moves.
 - [cypress.io](https://cypress.io) is most popular JS/TS test framework for writing automated tests.
+- [chess.js](https://github.com/jhlywa/chess.js/blob/master/README.md) is very handfull npm package with vary functions. I used just converting algebraic to FEN method for this project.
 
 ## How it works?
 

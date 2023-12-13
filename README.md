@@ -21,11 +21,11 @@ The goal of this project is to create a chess bot to demonstrate that it is feas
 
 ### 1. First of all, it need to start the game.
 
-Fixed wiewport sets to: cy.viewport(1000, 660)
+Fixed viewport sets to: cy.viewport(1000, 660)
 
 There are also several settings available to change in /fixtures folder as:
 
-- langageMutations.json
+- languageMutations.json
 - playerLevel.json
 - stockFishDepth.json
 

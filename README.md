@@ -33,24 +33,26 @@ There are also several settings available to change in /fixtures folder as:
 
 Before that, we need to check what color do we have. It will be find via cy.getMyPlayerColor()
 
+**first move:**
+
 - for white: King´s Pawn Opening - e4
 - for black: as defense - kc6
 
-Parametrized first move can be parametrized and changed in the future in fixture file.
+First move can be parametrized and changed in the future in fixture file.
 
-Waiting for every turn is handled by loop with cy.get('[data-ply=x]').should(be.visible) which x is step of opponent move.
+Waiting for every opponent turn is handled by loop with cy.get('[data-ply=x]').should(be.visible) which x is step of opponent move.
 
 ### 3. It needs scan all moves from chess.com [data-cy="move-list"]
 
-It is handled by cy.scanMovesFromChessMoveList() with populate each nodes to array.
+It is handled by cy.scanMovesFromChessMoveList() with populate each nodes(moves) to array.
 
 ### 4. If I have all moves, I need to compute evaluation and get best move from stockfish.online
 
-It is handled by cy.getBestMove(listOfMoves), which will be converted from algebraic notation to FEN and then will be sended via cy.request() to stockfish.online for best move request.
+It is handled by cy.getBestMove(listOfMoves), which will be converted from algebraic notation to FEN and then will be sended via cy.request() to stockfish.online for best move response.
 
 ### 5. Action with cy.move()
 
-It is handled by cy.move() custom command which needs to calculate chess board from coordinates - to coordinates.
+It is handled by cy.move() custom command which needs to calculate chess board **from coordinates** - **to coordinates**.
 
 ## Installation
 

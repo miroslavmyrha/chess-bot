@@ -40,7 +40,7 @@ Before that, we need to check what color do we have. It will be find via cy.getM
 
 First move can be parametrized and changed in the future in fixture file.
 
-Waiting for every opponent turn is handled by loop with cy.get('[data-ply=x]').should('be.visible') which x is step of opponent move.
+Waiting for every opponent turn is handled by loop with cy.get('[data-ply="x"]').should('be.visible') which x is step of opponent move.
 
 ### 3. It needs scan all moves from chess.com [data-cy="move-list"]
 

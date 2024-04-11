@@ -59,7 +59,7 @@ It is handled by cy.move() custom command which needs to calculate chess board *
 clonning repo:
 
 ```bash
-git clone https://github.com/miroslavkadidlo/chess-bot.git
+git clone https://github.com/miroslavmyrha/chess-bot.git
 ```
 
 ```bash

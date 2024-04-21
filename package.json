@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miroslavkadidlo/chess-bot.git"
+    "url": "git+https://github.com/miroslavmyrha/chess-bot.git"
   },
   "keywords": [
     "chess",
@@ -21,9 +21,9 @@
   "author": "Miroslav Myrha",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/miroslavkadidlo/chess-bot/issues"
+    "url": "https://github.com/miroslavmyrha/chess-bot/issues"
   },
-  "homepage": "https://github.com/miroslavkadidlo/chess-bot#readme",
+  "homepage": "https://github.com/miroslavmyrha/chess-bot#readme",
   "dependencies": {
     "chess.js": "^1.0.0-beta.6",
     "cypress": "^13.4.0"

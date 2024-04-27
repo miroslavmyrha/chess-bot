@@ -2,15 +2,15 @@
 
 chess bot on chess.com
 
-The goal of this project is to create a chess bot to demonstrate that it is feasible.
+The objective of this project is to develop a chess bot that demonstrates the practicality of automated play on chess.com
 
-**Please don't cheat!** - It is just for demo.
+**PPlease refrain from cheating.** - This bot is designed solely for demonstration and educational purposes.
 
 ![ezgif com-video-to-gif](https://github.com/miroslavkadidlo/chess-bot/assets/16743203/4a716141-36a5-4dc2-91bf-1dc44cef590f)
 
 ## Introduction
 
-**Used technologies and pages:**
+**Used technologies and resources:**
 
 - [chess.com](https://www.chess.com/) is the most popular chess website and mobile application for playing chess.
 - [stockfish.online](https://stockfish.online/) - stockfish is the most popular and powerfull chess engine which can evaluate best move with depth of moves.
@@ -19,15 +19,21 @@ The goal of this project is to create a chess bot to demonstrate that it is feas
 
 ## How it works?
 
-### 1. First of all, it need to start the game.
+### 1. Initiating the game
 
-Fixed viewport sets to: cy.viewport(1000, 660)
+The process begins with setting up the game´s visual field: 
 
-There are also several settings available to change in /fixtures folder as:
+`cy.viewport(1000, 660)`
 
+Custom settings can be adjusted within the 
+
+`/fixtures` folder, including:
+
+`
 - languageMutations.json
 - playerLevel.json
 - stockFishDepth.json
+`
 
 ### 2. As first move are chosen:
 

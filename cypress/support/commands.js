@@ -2,7 +2,7 @@ import languageMutationObject from './../fixtures/languageMutations.json'
 import stockFishDepth from './../fixtures/stockFishDepth.json'
 
   // test moving
-  // 57 ==> 56, 55 
+  // 57 ==> 56, 55
   // 52 ==> 53, 54
 
   // 1st number y-axe
@@ -65,21 +65,20 @@ Cypress.Commands.add('startChessGame', (
         .should('be.visible')
         .click()
 
-      cy.get('button[type="submit"]')
-        .filter(':visible')
+      // removed by new version
+      // cy.get('button[type="submit"]')
+      //   .filter(':visible')
+      //   .click()
+
+      cy.get('[data-cy="authentication-modal-play-as-guest"]')
         .click()
 
-      cy.get('button[type="button"]')
-        .contains(
-          languageMutationObject[chessGameParametersObject.languageMutation].playButton
-        )
-        .click()
-
-      cy.get('button[aria-label="Close"]')
-        .click()
+      // removed by new version
+      // cy.get('button[aria-label="Close"]')
+      //   .click()
 
       cy.get('button[data-cy="new-game-index-play"]')
-        .should('be.visible')
+        .should('exist')
         .click()
 })
 
@@ -87,6 +86,7 @@ Cypress.Commands.add('getMyPlayerColor', (
   ) => {
     // turn
     cy.get('img[data-cy="avatar"]')
+      .filter(':visible')
       .eq(1)
       .invoke(
         'attr', 'src'
@@ -103,8 +103,8 @@ Cypress.Commands.add('getMyPlayerColor', (
 })
 
 Cypress.Commands.add('move', (
-  myPlayerColor, coordinatesStart, coordinatesMoveTo   
-    ) => {  
+  myPlayerColor, coordinatesStart, coordinatesMoveTo
+    ) => {
       let startCoordinates = calculateChessboardCoordinates(myPlayerColor, coordinatesStart)
       let moveToCoordinates = calculateChessboardCoordinates(myPlayerColor, coordinatesMoveTo)
 
@@ -140,12 +140,13 @@ Cypress.Commands.add('scanMovesFromChessMoveList', (
       let gameplayMovesFromChessCom = []
 
       cy.get('div.node').each((move) => {
-        if (move.find('span').length) {
-          gameplayMovesFromChessCom.push(move.find('span').attr('data-figurine') + move.text().trim())
+        if (move.find('span').find('span').length) {
+          gameplayMovesFromChessCom.push(move.find('span').find('span').attr('data-figurine') + move.text().trim())
         } else {
           gameplayMovesFromChessCom.push(move.text().trim())
         }
       })
+
     return cy.wrap(gameplayMovesFromChessCom)
 })
 

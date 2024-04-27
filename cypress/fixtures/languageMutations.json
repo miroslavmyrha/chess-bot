@@ -1,7 +1,7 @@
 {
-  "cz": {
+  "en": {
     "playOnline": "Play Online",
-    "cookiesReject": "Odmítnout vše",
-    "playButton": "Hrát"
+    "cookiesReject": "Reject All",
+    "playButton": "Play as guest"
   }
 }

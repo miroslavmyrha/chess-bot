@@ -2,7 +2,7 @@ import playerLevel from '../fixtures/playerLevel.json'
 
 // default 1000x660
 
-const selectedLanguageMutation = 'cz'
+const selectedLanguageMutation = 'en'
 
 function tranformNotation(chessNotationCoordinates) {  
   let axeY = chessNotationCoordinates.slice(1)
@@ -31,9 +31,7 @@ describe('before: start chess game', () => {
   })
 
   it('Play chess to win', function () {
-    // to-do: develop waiting for oponent connection method..
-    cy.get('[data-cy="move-list"]').should('be.visible')
-    // cy.wait(5000)
+    cy.get('[data-cy="move-list"]').should('exist')
     cy.getMyPlayerColor().then(myColor => {
       if (myColor === 'white') {
 
@@ -45,7 +43,7 @@ describe('before: start chess game', () => {
 
         for (let i = 1; i < 130; i++) {
 
-          cy.get('div[data-ply="' + i*2 + '"]').should('be.visible')
+          cy.get('div[data-ply="' + i*2 + '"]').should('exist')
 
           cy.scanMovesFromChessMoveList().then(moveList => {
             cy.getBestMove(moveList).then(bestMove => {
@@ -59,7 +57,7 @@ describe('before: start chess game', () => {
         }
       } else {
        
-        cy.get('div[data-ply="' + 1 + '"]').should('be.visible')
+        cy.get('div[data-ply="' + 1 + '"]').should('exist')
 
         cy.move(
           myColor, 
@@ -69,7 +67,7 @@ describe('before: start chess game', () => {
 
         for (let i = 3; i < 130; i++) {
           if (i % 2 !== 0) {
-            cy.get('div[data-ply="' + i + '"]').should('be.visible')
+            cy.get('div[data-ply="' + i + '"]').should('exist')
 
             cy.scanMovesFromChessMoveList().then(moveList => {
               cy.getBestMove(moveList).then(bestMove => {

@@ -4,7 +4,7 @@ chess bot on chess.com
 
 The objective of this project is to develop a chess bot that demonstrates the practicality of automated play on chess.com
 
-**PPlease refrain from cheating.** - This bot is designed solely for demonstration and educational purposes.
+**Please refrain from cheating.** - This bot is designed solely for demonstration and educational purposes.
 
 ![ezgif com-video-to-gif](https://github.com/miroslavkadidlo/chess-bot/assets/16743203/4a716141-36a5-4dc2-91bf-1dc44cef590f)
 
@@ -28,13 +28,11 @@ The process begins with setting up the game´s visual field:
 Custom settings can be adjusted within the 
 
 `/fixtures` folder, including:
-
 `
 - languageMutations.json
 - playerLevel.json
 - stockFishDepth.json
 `
-
 ### 2. As first move are chosen:
 
 Before that, we need to check what color do we have. It will be find via cy.getMyPlayerColor()

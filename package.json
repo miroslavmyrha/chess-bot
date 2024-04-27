@@ -4,7 +4,9 @@
   "description": "chess-bot",
   "main": "cypress.config.js",
   "scripts": {
-    "test": "cy: test"
+    "test": "cy: test",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,6 @@
   "homepage": "https://github.com/miroslavmyrha/chess-bot#readme",
   "dependencies": {
     "chess.js": "^1.0.0-beta.6",
-    "cypress": "^13.4.0"
+    "cypress": "^13.8.1"
   }
 }

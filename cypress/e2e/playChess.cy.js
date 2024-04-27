@@ -1,4 +1,5 @@
 import playerLevel from '../fixtures/playerLevel.json'
+import numsOfGameplayMoves from '../fixtures/numsOfGameplayMoves.json'
 
 // default 1000x660
 
@@ -41,7 +42,7 @@ describe('before: start chess game', () => {
           tranformNotation('e4') 
         )
 
-        for (let i = 1; i < 130; i++) {
+        for (let i = 1; i < numsOfGameplayMoves.numsOfGameplay; i++) {
 
           cy.get('div[data-ply="' + i*2 + '"]').should('exist')
 
@@ -65,7 +66,7 @@ describe('before: start chess game', () => {
           tranformNotation('c6')
         )
 
-        for (let i = 3; i < 130; i++) {
+        for (let i = 3; i < numsOfGameplayMoves.numsOfGameplay; i++) {
           if (i % 2 !== 0) {
             cy.get('div[data-ply="' + i + '"]').should('exist')
 
@@ -75,8 +76,6 @@ describe('before: start chess game', () => {
                   myColor,
                   tranformNotation(bestMove.data.slice(9, 11)),
                   tranformNotation(bestMove.data.slice(11, 13))
-                  // tranformNotation(bestMove.data.slice(21, -2)),
-                  // tranformNotation(bestMove.data.slice(23))
                 )
               })
             })

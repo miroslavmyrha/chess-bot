@@ -1,91 +1,105 @@
-# chess-bot
 
-chess bot on chess.com
+# Chess-bot
 
-The objective of this project is to develop a chess bot that demonstrates the practicality of automated play on chess.com
+**Chess-bot** is an automated application designed for demonstration and educational purposes on [chess.com](https://www.chess.com), the most popular chess website and mobile application. 
 
-**Please refrain from cheating.** - This bot is designed solely for demonstration and educational purposes.
+**Please refrain from using this bot for cheating purposes.**
 
 ![ezgif com-video-to-gif](https://github.com/miroslavkadidlo/chess-bot/assets/16743203/4a716141-36a5-4dc2-91bf-1dc44cef590f)
 
 ## Introduction
 
-**Used technologies and resources:**
+This bot leverages several technologies and resources to function effectively:
 
-- [chess.com](https://www.chess.com/) is the most popular chess website and mobile application for playing chess.
-- [stockfish.online](https://stockfish.online/) - stockfish is the most popular and powerfull chess engine which can evaluate best move with depth of moves.
-- [cypress.io](https://cypress.io) is most popular JS/TS test framework for writing automated tests.
-- [chess.js](https://github.com/jhlywa/chess.js/blob/master/README.md) is very handfull npm package with vary functions. I used just converting algebraic to FEN method for this project.
+- **[chess.com](https://www.chess.com):** The main platform where the bot operates.
+- **[stockfish.online](https://stockfish.online):** Utilizes Stockfish, the most powerful chess engine, to evaluate the best moves considering multiple depths.
+- **[cypress.io](https://www.cypress.io):** A leading JavaScript/TypeScript testing framework used for writing automated tests.
+- **[chess.js](https://npmjs.com/package/chess.js):** A handy npm package employed for converting algebraic notation to FEN.
 
-## How it works?
+## How it Works?
 
-### 1. Initiating the game
+### 1. Game Initialization
 
-The process begins with setting up the game´s visual field: 
+The bot begins by setting up the visual field of the game:
 
-`cy.viewport(1000, 660)`
+```javascript
+cy.viewport(1000, 660)
+```
 
-Custom settings can be adjusted within the 
+Custom settings are managed within the `/fixtures` folder, which includes:
 
-`/fixtures` folder, including:
-`
-- languageMutations.json
-- playerLevel.json
-- stockFishDepth.json
-`
-### 2. As first move are chosen:
+- `languageMutations.json`
+- `playerLevel.json`
+- `stockFishDepth.json`
+- `numOfGameplayMoves.json`
+- `firstMove.json`
 
-Before that, we need to check what color do we have. It will be find via cy.getMyPlayerColor()
+### 2. Making the First Move
 
-**first move:**
+The first move depends on the color assigned to the bot:
 
-- for white: King´s Pawn Opening - e4
-- for black: as defense - kc6
+```javascript
+cy.getMyPlayerColor()
+```
 
-First move can be parametrized and changed in the future in fixture file.
+- **White:** Opens with King's Pawn Opening - `e4`.
+- **Black:** Uses a defensive move - `kc6`.
 
-Waiting for every opponent turn is handled by loop with cy.get('[data-ply="x"]').should('be.visible') which x is step of opponent move.
+These moves are configurable in the fixture files.
 
-### 3. It needs scan all moves from chess.com [data-cy="move-list"]
+### 3. Monitoring Opponent's Moves
 
-It is handled by cy.scanMovesFromChessMoveList() with populate each nodes(moves) to array.
+The bot waits for each opponent's turn using a loop:
 
-### 4. If I have all moves, I need to compute evaluation and get best move from stockfish.online
+```javascript
+cy.get('[data-ply="x"]').should('exist')
+```
 
-It is handled by cy.getBestMove(listOfMoves), which will be converted from algebraic notation to FEN and then will be sended via cy.request() to stockfish.online for best move response.
+### 4. Scanning and Evaluating Moves
 
-### 5. Action with cy.move()
+All moves from chess.com are scanned:
 
-It is handled by cy.move() custom command which needs to calculate chess board **from coordinates** - **to coordinates**.
+```javascript
+cy.scanMovesFromChessMoveList()
+```
+
+This populates an array with all the moves, which is then evaluated to determine the best move using Stockfish:
+
+```javascript
+cy.getBestMove(listOfMoves)
+```
+
+### 5. Executing Moves
+
+The bot executes moves using:
+
+```javascript
+cy.move()
+```
+
+This function calculates the necessary board coordinates for the move.
 
 ## Installation
 
-clonning repo:
+Clone the repository and set up the project:
 
 ```bash
 git clone https://github.com/miroslavmyrha/chess-bot.git
-```
-
-```bash
-cd /<project>
-
+cd chess-bot
 npm install
 ```
 
-## Run chess
+To run the bot:
 
 ```bash
 npm run cypress:open
 ```
 
-click on playChess.cy.js
+Select `playChess.cy.js` in the Cypress UI to start the bot.
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first
-to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+Contributions are welcome! For major changes, please open an issue first to discuss what you'd like to change. Ensure to update tests as appropriate.
 
 ## License
 

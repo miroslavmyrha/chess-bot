@@ -1,5 +1,6 @@
 import playerLevel from '../fixtures/playerLevel.json'
 import numsOfGameplayMoves from '../fixtures/numsOfGameplayMoves.json'
+import firstMove from '../fixtures/firstMove.json'
 
 // default 1000x660
 
@@ -38,8 +39,8 @@ describe('before: start chess game', () => {
 
         cy.move(
           myColor, 
-          tranformNotation('e2'),
-          tranformNotation('e4') 
+          tranformNotation(firstMove.white.from),
+          tranformNotation(firstMove.white.to) 
         )
 
         for (let i = 1; i < numsOfGameplayMoves.numsOfGameplay; i++) {
@@ -62,8 +63,8 @@ describe('before: start chess game', () => {
 
         cy.move(
           myColor, 
-          tranformNotation('b8'),
-          tranformNotation('c6')
+          tranformNotation(firstMove.black.from),
+          tranformNotation(firstMove.black.to)
         )
 
         for (let i = 3; i < numsOfGameplayMoves.numsOfGameplay; i++) {
